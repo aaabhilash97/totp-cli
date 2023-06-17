@@ -13,13 +13,13 @@ import (
 )
 
 var accountName string
-var Value string
+var otpUri string
 var Add bool
 var Delete bool
 
 func init() {
 	flag.StringVar(&accountName, "account", "", "Name to be used for account")
-	flag.StringVar(&Value, "value", "", "Value to add")
+	flag.StringVar(&otpUri, "url", "", "Value to add")
 	flag.BoolVar(&Add, "add", false, "Add mode")
 	flag.BoolVar(&Delete, "delete", false, "delete mode")
 	flag.Parse()
@@ -28,7 +28,7 @@ func init() {
 		os.Exit(1)
 	}
 	if Add {
-		if accountName == "" || Value == "" {
+		if accountName == "" || otpUri == "" {
 			fmt.Println("account and value can't be empty")
 			os.Exit(1)
 		}
@@ -49,7 +49,7 @@ func execute() error {
 	item.SetAccessGroup("com.zero.zero")
 	if Add {
 		item.SetLabel(label)
-		item.SetData([]byte(Value))
+		item.SetData([]byte(otpUri))
 		item.SetSynchronizable(keychain.SynchronizableNo)
 		item.SetAccessible(keychain.AccessibleAfterFirstUnlockThisDeviceOnly)
 		err := keychain.AddItem(item)
