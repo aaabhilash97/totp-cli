@@ -14,20 +14,20 @@ import (
 
 var accountName string
 var otpUri string
-var Add bool
-var Delete bool
+var add bool
+var delete bool
 
 func init() {
 	flag.StringVar(&accountName, "account", "", "Name to be used for account")
 	flag.StringVar(&otpUri, "url", "", "Value to add")
-	flag.BoolVar(&Add, "add", false, "Add mode")
-	flag.BoolVar(&Delete, "delete", false, "delete mode")
+	flag.BoolVar(&add, "add", false, "Add mode")
+	flag.BoolVar(&delete, "delete", false, "delete mode")
 	flag.Parse()
 	if accountName == "" {
 		fmt.Println("account can't be empty")
 		os.Exit(1)
 	}
-	if Add {
+	if add {
 		if accountName == "" || otpUri == "" {
 			fmt.Println("account and value can't be empty")
 			os.Exit(1)
@@ -47,7 +47,7 @@ func execute() error {
 	item.SetService(serviceName)
 	item.SetAccount(accountName)
 	item.SetAccessGroup("com.zero.zero")
-	if Add {
+	if add {
 		item.SetLabel(label)
 		item.SetData([]byte(otpUri))
 		item.SetSynchronizable(keychain.SynchronizableNo)
@@ -58,7 +58,7 @@ func execute() error {
 			return err
 		}
 		fmt.Println("Added:", serviceName, accountName)
-	} else if Delete {
+	} else if delete {
 		err := keychain.DeleteGenericPasswordItem(serviceName, accountName)
 		if err != nil {
 			fmt.Println("Failed to delete:", err)
